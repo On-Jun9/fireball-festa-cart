@@ -43,6 +43,7 @@ const PRODUCTS = [
   {brand:"파이어볼 4L", name:"워터리스 다이렉트 4L", size:"4L", msrp:50000, discount:"35%", price:32500},
   {brand:"파이어볼 4L", name:"파이어볼 타월 클리너 4L", size:"4L", msrp:50000, discount:"50%", price:25000},
   {brand:"파이어볼 4L", name:"이지코트 엑스트라 4L", size:"4L", msrp:130000, discount:"40%", price:78000},
+  {brand:"파이어볼 4L", name:"아이언번 SE 4L", size:"4L", msrp:100000, discount:"40%", price:60000},
 
   // 파이어볼 500ml
   {brand:"파이어볼 500ml", name:"알칼리 프리워시 500ml", size:"500ml", msrp:14000, discount:"30%", price:9800},
@@ -57,6 +58,7 @@ const PRODUCTS = [
   {brand:"파이어볼 400~500ml", name:"하이드로 샴푸 500ml", size:"500ml", msrp:20000, discount:"35%", price:13000},
   {brand:"파이어볼 400~500ml", name:"리본 500ml", size:"500ml", msrp:16000, discount:"30%", price:11200},
   {brand:"파이어볼 400~500ml", name:"아이언번 500ml", size:"500ml", msrp:13000, discount:"30%", price:9100},
+  {brand:"파이어볼 400~500ml", name:"휠앤타이어 500ml", size:"500ml", msrp:13000, discount:"30%", price:9100},
   {brand:"파이어볼 400~500ml", name:"쇼카 타이어 500ml", size:"500ml", msrp:28000, discount:"40%", price:16800},
   {brand:"파이어볼 400~500ml", name:"글로스 500ml", size:"500ml", msrp:22000, discount:"35%", price:14300},
   {brand:"파이어볼 400~500ml", name:"사틴 500ml", size:"500ml", msrp:22000, discount:"35%", price:14300},
@@ -89,6 +91,9 @@ const PRODUCTS = [
   {brand:"파이어볼 코팅제", name:"신제품 - 휠 코트 <s>50ml</s> 30ml", size:"30ml", msrp:30000, discount:"30%", price:21000},
   {brand:"파이어볼 코팅제", name:"신제품 - 플래시 200ml", size:"200ml", msrp:35000, discount:"30%", price:24500},
 
+  // 워셔액
+  {brand:"워셔액", name:"파이어볼 에탄올 워셔액 1.8L 1박스 (12개입)", size:"1.8L×12", msrp:42000, discount:"29%", price:29900},
+
   // 바인더 4L
   {brand:"바인더 4L", name:"중성 프리워시 4L", size:"4L", msrp:30000, discount:"20%", price:24000},
   {brand:"바인더 4L", name:"[오레데쓰요] 프리미엄 프리워시 4L (재고75)", size:"4L", msrp:54000, discount:"70%", price:16200},
@@ -107,72 +112,72 @@ const PRODUCTS = [
   {brand:"바인더 4L", name:"타월&패드 클리너 4L", size:"4L", msrp:30000, discount:"60%", price:12000},
 
   // 바인더 500ml~1L
-  {brand:"바인더 500ml~1L", name:"카샴푸 블루 500ml", size:"500ml", msrp:8000, discount:"20%", price:6400},
-  {brand:"바인더 500ml~1L", name:"고광택 발수왁스 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
-  {brand:"바인더 500ml~1L", name:"익스트림 타이어 코팅왁스 500ml", size:"500ml", msrp:15000, discount:"20%", price:12000},
+  {brand:"바인더 500ml~1L", name:"프리미엄 카샴푸(블루) 500ml", size:"500ml", msrp:8000, discount:"20%", price:6400},
+  {brand:"바인더 500ml~1L", name:"프리미엄 고광택 발수왁스 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
+  {brand:"바인더 500ml~1L", name:"프리미엄 익스트림 타이어 코팅왁스 500ml", size:"500ml", msrp:15000, discount:"20%", price:12000},
   {brand:"바인더 500ml~1L", name:"에어로졸 타이어 코팅왁스 500ml", size:"500ml", msrp:12000, discount:"20%", price:9600},
-  {brand:"바인더 500ml~1L", name:"휠앤타이어 클리너 500ml", size:"500ml", msrp:7000, discount:"20%", price:5600},
-  {brand:"바인더 500ml~1L", name:"인테리어 클리너 500ml", size:"500ml", msrp:8000, discount:"20%", price:6400},
-  {brand:"바인더 500ml~1L", name:"인테리어 원스텝 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
-  {brand:"바인더 500ml~1L", name:"유리세정제 500ml", size:"500ml", msrp:6000, discount:"20%", price:4800},
-  {brand:"바인더 500ml~1L", name:"버그클리너 500ml", size:"500ml", msrp:6000, discount:"20%", price:4800},
-  {brand:"바인더 500ml~1L", name:"철분제거제 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
-  {brand:"바인더 500ml~1L", name:"익스트림 휠 세정제+500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
-  {brand:"바인더 500ml~1L", name:"슬릭왁스 500ml", size:"500ml", msrp:8000, discount:"20%", price:6400},
-  {brand:"바인더 500ml~1L", name:"중성 프리워시 1L", size:"1L", msrp:10000, discount:"20%", price:8000},
+  {brand:"바인더 500ml~1L", name:"프리미엄 휠앤타이어 클리너 500ml", size:"500ml", msrp:7000, discount:"20%", price:5600},
+  {brand:"바인더 500ml~1L", name:"프리미엄 인테리어 클리너 500ml", size:"500ml", msrp:8000, discount:"20%", price:6400},
+  {brand:"바인더 500ml~1L", name:"프리미엄 인테리어 원스텝 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
+  {brand:"바인더 500ml~1L", name:"프리미엄 유리세정제 500ml", size:"500ml", msrp:6000, discount:"20%", price:4800},
+  {brand:"바인더 500ml~1L", name:"프리미엄 버그클리너 500ml", size:"500ml", msrp:6000, discount:"20%", price:4800},
+  {brand:"바인더 500ml~1L", name:"프리미엄 철분제거제 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
+  {brand:"바인더 500ml~1L", name:"프리미엄 익스트림 휠 세정제+500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
+  {brand:"바인더 500ml~1L", name:"프리미엄 슬릭왁스 500ml", size:"500ml", msrp:8000, discount:"20%", price:6400},
+  {brand:"바인더 500ml~1L", name:"프리미엄 중성 프리워시 1L", size:"1L", msrp:10000, discount:"20%", price:8000},
   {brand:"바인더 500ml~1L", name:"타월&패드 클리너 1L", size:"1L", msrp:10000, discount:"20%", price:8000},
-  {brand:"바인더 500ml~1L", name:"프리미엄 프리워시 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
+  {brand:"바인더 500ml~1L", name:"프리미엄 프리워시(알칼리) 500ml", size:"500ml", msrp:10000, discount:"20%", price:8000},
 
   // 파이어볼 고체왁스 - 블랙 PP용기
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 그래핀 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 밀크크림 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 캔디샤베트 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 체리블라썸 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 버터 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 휠 왁스 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 에일리언블러드 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 화이트왁스 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 블랙왁스 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 리버티왁스 150ml", size:"150ml", msrp:99000, discount:"", price:69000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) PPF 왁스 150ml", size:"150ml", msrp:110000, discount:"", price:79000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 섹시레이디 150ml", size:"150ml", msrp:110000, discount:"", price:79000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 브라질 150ml", size:"150ml", msrp:120000, discount:"", price:89000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 퓨전 150ml", size:"150ml", msrp:140000, discount:"", price:99000},
-  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 고스트 150ml", size:"150ml", msrp:140000, discount:"", price:99000},
-  {brand:"파이어볼 고체왁스", name:"신제품 - 블랙 PP용기) 퓨전Z 150ml", size:"150ml", msrp:140000, discount:"", price:99000},
-  {brand:"파이어볼 고체왁스", name:"신제품 - 블랙 PP용기) 몽 150ml", size:"150ml", msrp:140000, discount:"", price:99000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 그래핀 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 밀크크림 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 캔디샤베트 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 체리블라썸 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 버터 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 쇼카 휠 왁스 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 에일리언블러드 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 화이트왁스 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 블랙왁스 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 리버티왁스 150ml", size:"150ml", msrp:99000, discount:"30%", price:69000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) PPF 왁스 150ml", size:"150ml", msrp:110000, discount:"28%", price:79000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 섹시레이디 150ml", size:"150ml", msrp:110000, discount:"28%", price:79000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 브라질 150ml", size:"150ml", msrp:120000, discount:"26%", price:89000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 퓨전 150ml", size:"150ml", msrp:140000, discount:"29%", price:99000},
+  {brand:"파이어볼 고체왁스", name:"블랙 PP용기) 고스트 150ml", size:"150ml", msrp:140000, discount:"29%", price:99000},
+  {brand:"파이어볼 고체왁스", name:"신제품 - 블랙 PP용기) 퓨전Z 150ml", size:"150ml", msrp:140000, discount:"29%", price:99000},
+  {brand:"파이어볼 고체왁스", name:"신제품 - 블랙 PP용기) 몽 150ml", size:"150ml", msrp:140000, discount:"29%", price:99000},
 
   // 파이어볼 고체왁스 - 원형 아크릴 용기
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 그래핀 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 에일리언 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 밀크크림 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 캔디샤베트 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 체리블라썸 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 버터 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 휠 왁스 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 화이트 왁스 170ml", size:"170ml", msrp:180000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 블랙왁스 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 리버티왁스 170ml", size:"170ml", msrp:170000, discount:"", price:110000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) PPF 왁스 170ml", size:"170ml", msrp:190000, discount:"", price:130000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 섹시레이디 170ml", size:"170ml", msrp:190000, discount:"", price:130000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 브라질 170ml", size:"170ml", msrp:210000, discount:"", price:140000},
-  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 고스트 170ml", size:"170ml", msrp:230000, discount:"", price:160000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 그래핀 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 에일리언 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 밀크크림 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 캔디샤베트 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 체리블라썸 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 버터 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 쇼카 휠 왁스 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 화이트 왁스 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 블랙왁스 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 리버티왁스 170ml", size:"170ml", msrp:170000, discount:"35%", price:110000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) PPF 왁스 170ml", size:"170ml", msrp:190000, discount:"32%", price:130000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 섹시레이디 170ml", size:"170ml", msrp:190000, discount:"32%", price:130000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 브라질 170ml", size:"170ml", msrp:210000, discount:"33%", price:140000},
+  {brand:"파이어볼 고체왁스", name:"원형 아크릴 용기) 고스트 170ml", size:"170ml", msrp:230000, discount:"30%", price:160000},
 
   // 파이어볼 고체왁스 - 사각 아크릴 용기
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 그래핀 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 에일리언 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 밀크크림 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 캔디샤베트 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 체리블라썸 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 버터 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 휠 왁스 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 블랙왁스 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 화이트 왁스 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 리버티왁스 200ml", size:"200ml", msrp:200000, discount:"", price:120000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) PPF 왁스 200ml", size:"200ml", msrp:220000, discount:"", price:150000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 섹시레이디 200ml", size:"200ml", msrp:220000, discount:"", price:150000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 브라질 200ml", size:"200ml", msrp:250000, discount:"", price:160000},
-  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 고스트 200ml", size:"200ml", msrp:280000, discount:"", price:180000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 그래핀 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 에일리언 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 밀크크림 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 캔디샤베트 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 체리블라썸 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 버터 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 쇼카 휠 왁스 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 블랙왁스 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 화이트 왁스 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 리버티왁스 200ml", size:"200ml", msrp:200000, discount:"40%", price:120000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) PPF 왁스 200ml", size:"200ml", msrp:220000, discount:"32%", price:150000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 섹시레이디 200ml", size:"200ml", msrp:220000, discount:"32%", price:150000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 브라질 200ml", size:"200ml", msrp:250000, discount:"36%", price:160000},
+  {brand:"파이어볼 고체왁스", name:"사각 아크릴 용기) 고스트 200ml", size:"200ml", msrp:280000, discount:"36%", price:180000},
 
   // 파이어볼 카향수/디퓨저
   {brand:"파이어볼 카향수/디퓨저", name:"파이어볼 카향수 루비 500ml", size:"500ml", msrp:18000, discount:"30%", price:14400},
@@ -185,13 +190,13 @@ const PRODUCTS = [
 
   // 세차용품
   {brand:"세차용품", name:"투명 버킷 18L", size:"18L", msrp:11000, discount:"20%", price:8800},
-  {brand:"세차용품", name:"유색 버킷 18L", size:"18L", msrp:10000, discount:"60%", price:4000},
+  {brand:"세차용품", name:"버킷 18L", size:"18L", msrp:10000, discount:"60%", price:4000},
   {brand:"세차용품", name:"휠버킷 7L", size:"7L", msrp:6000, discount:"20%", price:4800},
   {brand:"세차용품", name:"더스트 트랩", size:"", msrp:6000, discount:"20%", price:4800},
-  {brand:"세차용품", name:"트위스트 드라잉 타월 70x90", size:"70x90", msrp:10000, discount:"40%", price:6000},
   {brand:"세차용품", name:"제트타월 화이트 60x42", size:"60x42", msrp:5000, discount:"50%", price:2500},
-  {brand:"세차용품", name:"핀 드라잉 타월 70x90", size:"70x90", msrp:10000, discount:"30%", price:7000},
-  {brand:"세차용품", name:"양면 드라잉 타월 Ver.2 90x70", size:"90x70", msrp:20000, discount:"50%", price:10000},
+  {brand:"세차용품", name:"핀 드라잉 타월 70x90 Ver2", size:"70x90", msrp:9900, discount:"40%", price:5940},
+  {brand:"세차용품", name:"양면 드라잉 타월 86x74", size:"86x74", msrp:20000, discount:"50%", price:10000},
+  {brand:"세차용품", name:"화이트 어플리케이터", size:"", msrp:2900, discount:"40%", price:1740},
 ];
 
 // 수동 추가된 항목 모음 — 로컬스토리지에 저장됨
@@ -404,10 +409,57 @@ function loadCart(){
       if (!Array.isArray(arr)) throw new Error('저장 포맷 오류');
       cart.clear();
       for (const it of arr){
+        // 제품명 공백 정규화 (여러 공백 → 1개)
+        if (it.name) it.name = it.name.replace(/\s+/g, ' ').trim();
+
         // 마이그레이션: 휠 코트 50ml → 30ml 자동 변환
         if (it.brand === '파이어볼 코팅제' && it.name === '신제품 - 휠 코트 50ml' && it.size === '50ml') {
           it.name = '신제품 - 휠 코트 <s>50ml</s> 30ml';
           it.size = '30ml';
+        }
+
+        // 마이그레이션: 화이트 어플리케이터 (MANUAL → PRODUCTS)
+        if (it.brand === '-' && it.name === '화이트 어플리케이터' && it.size === '-') {
+          it.brand = '세차용품';
+          it.size = '';
+        }
+
+        // 마이그레이션: 바인더 500ml~1L 제품명 업데이트
+        if (it.brand === '바인더 500ml~1L') {
+          const nameMap = {
+            '카샴푸 블루 500ml': '프리미엄 카샴푸(블루) 500ml',
+            '고광택 발수왁스 500ml': '프리미엄 고광택 발수왁스 500ml',
+            '익스트림 타이어 코팅왁스 500ml': '프리미엄 익스트림 타이어 코팅왁스 500ml',
+            '휠앤타이어 클리너 500ml': '프리미엄 휠앤타이어 클리너 500ml',
+            '인테리어 클리너 500ml': '프리미엄 인테리어 클리너 500ml',
+            '인테리어 원스텝 500ml': '프리미엄 인테리어 원스텝 500ml',
+            '유리세정제 500ml': '프리미엄 유리세정제 500ml',
+            '버그클리너 500ml': '프리미엄 버그클리너 500ml',
+            '철분제거제 500ml': '프리미엄 철분제거제 500ml',
+            '익스트림 휠 세정제+500ml': '프리미엄 익스트림 휠 세정제+500ml',
+            '슬릭왁스 500ml': '프리미엄 슬릭왁스 500ml',
+            '중성 프리워시 1L': '프리미엄 중성 프리워시 1L',
+            '프리미엄 프리워시 500ml': '프리미엄 프리워시(알칼리) 500ml'
+          };
+          if (nameMap[it.name]) it.name = nameMap[it.name];
+        }
+
+        // 마이그레이션: 세차용품 제품명/사이즈 업데이트
+        if (it.brand === '세차용품') {
+          if (it.name === '유색 버킷 18L') {
+            it.name = '버킷 18L';
+          } else if (it.name === '핀 드라잉 타월 70x90') {
+            it.name = '핀 드라잉 타월 70x90 Ver2';
+            it.msrp = 9900;
+            it.price = 5940;
+            it.discount = '40%';
+          } else if (it.name === '양면 드라잉 타월 Ver.2 90x70' && it.size === '90x70') {
+            it.name = '양면 드라잉 타월 86x74';
+            it.size = '86x74';
+          } else if (it.name === '트위스트 드라잉 타월 70x90') {
+            // 삭제된 제품은 장바구니에서 제거
+            continue;
+          }
         }
 
         const p = PRODUCTS.concat(MANUAL).find(x => x && x.brand===it.brand && x.name===it.name && x.size===it.size) || it; // fallback
@@ -448,9 +500,14 @@ function loadManual(){
   } catch (e) {
     console.warn('수동 항목 로드 실패', e);
   }
-  // 기본 항목: 화이트 어플리케이터
-  if (MANUAL.length === 0){
-    MANUAL.push({brand:'-', name:'화이트 어플리케이터', size:'-', msrp:2900, discount:'40%', price:1740, manual:true});
+
+  // 마이그레이션: 화이트 어플리케이터를 MANUAL에서 제거 (PRODUCTS로 이동됨)
+  const whiteApplicatorIdx = MANUAL.findIndex(x =>
+    (x.brand === '-' || x.brand === '세차용품') &&
+    x.name === '화이트 어플리케이터'
+  );
+  if (whiteApplicatorIdx !== -1) {
+    MANUAL.splice(whiteApplicatorIdx, 1);
     saveManual();
   }
 }
