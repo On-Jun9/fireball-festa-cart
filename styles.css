@@ -47,6 +47,7 @@ tfoot td { font-weight: 700; }
   border-color: #ef4444;
 }
 .name { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.checkCol { width: 40px; }
 .brandCol { width: 110px; }
 .sizeCol { width: 80px; }
 .priceCol { width: 110px; }
