@@ -5,9 +5,14 @@ const fmt = n => (n||0).toLocaleString('ko-KR') + '원';
 const safeLower = v => (v==null ? '' : String(v)).toLowerCase();
 const keyOf = p => `${p?.brand ?? ''}|${p?.name ?? ''}|${p?.size ?? ''}`;
 
-// ---- 데이터 세트 (카페 데이터 + 수동 항목 컨테이너) ----
-// NOTE: 이전 버전의 base64 → JSON.parse에서 '//' 주석/트레일링 콤마 등으로 파싱 오류가 발생했습니다.
-//       아래 로더는 base64를 디코드한 뒤 JSON 조각만 추출하고 주석/트레일링 콤마를 제거한 후 파싱합니다.
+// 푸터 HTML 생성
+const createFooter = () => `
+  <div style="text-align:center; margin-top:16px; padding-top:12px; border-top:1px solid #e5e7eb; font-size:12px; color:#9ca3af;">
+    파이어볼 공식 카페 2025 공동구매 리스트<br>
+    fireball-cart.pages.dev<br>
+    세차갤 - times9517 (<a href="https://open.kakao.com/o/slem2xXh" target="_blank" style="color:#6b7280; text-decoration:underline;">문의</a>)
+  </div>
+`;
 const PRODUCTS = [
   // 파이어볼 4L
   {brand:"파이어볼 4L", name:"알칼리 프리워시 4L", size:"4L", msrp:60000, discount:"50%", price:30000},
@@ -315,15 +320,35 @@ function renderProducts(){
   if (totalSpan) totalSpan.textContent = totalCnt;
 }
 
+// 체크박스 동기화 통합 함수
+function updateCheckboxes(allChecked, anyChecked){
+  const master = document.getElementById('checkAll');
+  const masterMobile = document.getElementById('checkAllMobile');
+  const isAllChecked = allChecked && cart.size > 0;
+  const isIndeterminate = !allChecked && anyChecked;
+
+  [master, masterMobile].forEach(checkbox => {
+    if (!checkbox) return;
+    checkbox.checked = isAllChecked;
+    checkbox.indeterminate = isIndeterminate;
+    checkbox.onchange = () => {
+      for (const [, it] of cart){ if (it) it.checked = checkbox.checked; }
+      renderCart();
+    };
+  });
+}
+
 function renderCart(){
   const tbody = document.querySelector('#cartTable tbody');
   tbody.innerHTML = '';
   let total = 0; let count = 0; let allChecked = true; let anyChecked = false;
+
   for (const [k, item] of cart){
     const p = item?.product;
     const qty = item?.qty ?? 0;
-    if (!p) { continue; }
+    if (!p) continue;
     if (item.checked === undefined) item.checked = true;
+
     const sub = (p.price||0) * qty;
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -336,49 +361,29 @@ function renderCart(){
       <td data-label="소계" class="right">${fmt(sub)}</td>
       <td data-label="삭제" class="center"><button class="btn del">삭제</button></td>
     `;
+
     const cb = tr.querySelector('input.rowCheck');
     cb.onchange = ()=>{ item.checked = cb.checked; renderCart(); };
+
     const qtyInput = tr.querySelector('input.qty');
     qtyInput.addEventListener('change', ()=>{
       const n = parseInt(qtyInput.value||'0',10);
       setQty(k, isNaN(n)?0:n);
     });
+
     tr.querySelector('button.del').addEventListener('click', ()=> setQty(k, 0));
     tbody.appendChild(tr);
+
     if (item.checked){ total += sub; count += qty; anyChecked = true; }
     if (!item.checked) allChecked = false;
   }
+
   document.getElementById('grandTotal').textContent = fmt(total);
   document.getElementById('countInfo').textContent = anyChecked ? `선택 ${count}개 / ${fmt(total)}` : '선택 없음';
 
-  // PC용 전체 체크박스
-  const master = document.getElementById('checkAll');
-  const masterMobile = document.getElementById('checkAllMobile');
-
-  const isAllChecked = allChecked && cart.size > 0;
-  const isIndeterminate = !allChecked && anyChecked;
-
-  if (master){
-    master.checked = isAllChecked;
-    master.indeterminate = isIndeterminate;
-    master.onchange = () => {
-      for (const [, it] of cart){ if (it) it.checked = master.checked; }
-      renderCart();
-    };
-  }
-
-  // 모바일용 전체 체크박스
-  if (masterMobile){
-    masterMobile.checked = isAllChecked;
-    masterMobile.indeterminate = isIndeterminate;
-    masterMobile.onchange = () => {
-      for (const [, it] of cart){ if (it) it.checked = masterMobile.checked; }
-      renderCart();
-    };
-  }
-
+  updateCheckboxes(allChecked, anyChecked);
   saveCart();
-  renderSummary(); // 장바구니 변경 시 요약도 업데이트
+  renderSummary();
 }
 
 function saveCart(){
@@ -450,6 +455,31 @@ function loadManual(){
   }
 }
 
+// 수동 제품 가격 계산 로직 분리
+function calculateManualPrice(msrpValue, discountValue, priceInput){
+  let price, discountStr, msrp;
+
+  if (priceInput > 0) {
+    // 공구가 직접 입력한 경우
+    price = priceInput;
+    msrp = msrpValue || priceInput;
+    if (msrpValue > 0 && msrpValue !== priceInput) {
+      const calculatedDisc = Math.round((1 - priceInput / msrpValue) * 100);
+      discountStr = calculatedDisc > 0 ? `${calculatedDisc}%` : '';
+    } else {
+      discountStr = '';
+    }
+  } else {
+    // 할인율로 자동 계산
+    msrp = msrpValue || 0;
+    const discNum = Math.min(Math.max(Number(discountValue||0),0),100);
+    price = Math.round(msrp * (1 - discNum/100));
+    discountStr = discountValue ? `${discountValue}%` : '';
+  }
+
+  return {price, discountStr, msrp};
+}
+
 // 수동 추가 핸들러
 function addManualProduct(){
   const b = document.getElementById('mBrand').value || '-';
@@ -461,42 +491,18 @@ function addManualProduct(){
 
   if (!n){ alert('상품명을 입력하세요.'); return; }
 
-  let price, discountStr, msrp;
+  const {price, discountStr, msrp} = calculateManualPrice(msrpV, discV, priceInput);
+  const p = {brand:b, name:n, size:s || '-', msrp, discount:discountStr, price:price||0, manual:true};
 
-  if (priceInput > 0) {
-    // 공구가 직접 입력한 경우
-    price = priceInput;
-    msrp = msrpV || priceInput; // msrp 없으면 공구가와 동일 (할인 없음)
-    if (msrpV > 0 && msrpV !== priceInput) {
-      // msrp가 있으면 할인율 역산
-      const calculatedDisc = Math.round((1 - priceInput / msrpV) * 100);
-      discountStr = calculatedDisc > 0 ? `${calculatedDisc}%` : '';
-    } else {
-      discountStr = '';
-    }
-  } else {
-    // 할인율로 자동 계산
-    msrp = msrpV || 0;
-    price = Math.round(msrp * (1 - Math.min(Math.max(Number(discV||0),0),100)/100));
-    discountStr = discV ? `${discV}%` : '';
-  }
-
-  const p = {brand:b, name:n, size:s || '-', msrp:msrp, discount:discountStr, price:price||0, manual:true};
-  const k = keyOf(p);
-
-  // MANUAL 배열에서 기존 항목 찾기
   const manualIdx = MANUAL.findIndex(x => x.brand===p.brand && x.name===p.name && x.size===p.size);
-
-  // 중복 방지: 동일 키 존재 시 수량만 올리는 버튼 제공
   const exists = PRODUCTS.concat(MANUAL).some(x => x.brand===p.brand && x.name===p.name && x.size===p.size);
+
   if (exists){
-    // MANUAL에 있으면 업데이트
     if (manualIdx !== -1) {
       MANUAL[manualIdx] = p;
       saveManual();
       renderProducts();
     }
-    // 이미 목록에 있으면 곧바로 장바구니에 추가
     addToCart(p, 1);
   } else {
     MANUAL.push(p);
@@ -504,14 +510,11 @@ function addManualProduct(){
     renderProducts();
   }
 
-  // 장바구니에 같은 상품이 있으면 가격 업데이트
+  const k = keyOf(p);
   if (cart.has(k)) {
-    const cartItem = cart.get(k);
-    cartItem.product = p;
+    cart.get(k).product = p;
     renderCart();
   }
-
-  // 입력 유지(연속 등록 용도)
 }
 
 // 요약 섹션 렌더링
@@ -542,191 +545,6 @@ function renderSummary(){
   const isEmpty = selectedItems.length === 0;
 
   summaryContent.innerHTML = `
-  <style>
-    #summarySection {
-      padding: 0 !important;
-      overflow-x: hidden;
-      border: none !important;
-    }
-    .share-container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .share-header {
-      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-      color: white;
-      padding: 16px 24px;
-      text-align: center;
-    }
-    .share-header h2 {
-      font-size: 18px;
-      margin: 0;
-      font-weight: 700;
-    }
-    .share-content {
-      padding: 20px 24px;
-    }
-    .share-items-grid {
-      display: block;
-      margin-bottom: 20px;
-    }
-    .share-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      margin-bottom: 4px;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      background: #fafafa;
-    }
-    .share-item-qty {
-      background: #e0e7ff;
-      color: #4338ca;
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 12px;
-      font-weight: 700;
-      min-width: 32px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-    .share-item-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      width: 100%;
-    }
-    .share-item-name {
-      font-size: 13px;
-      margin-bottom: 0;
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-weight: 700;
-      color: #111;
-    }
-    .share-item-meta {
-      display: none;
-    }
-    .share-item-prices {
-      gap: 6px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-    }
-    .share-price-original {
-      display: none;
-    }
-    .share-price-discount {
-      font-size: 14px;
-      font-weight: 700;
-      color: #059669;
-    }
-    .share-summary {
-      background: #f9fafb;
-      border: 2px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 24px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .share-summary-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      font-size: 16px;
-    }
-    .share-summary-row.total {
-      border-top: 3px solid #d1d5db;
-      margin-top: 16px;
-      padding-top: 20px;
-      font-size: 20px;
-      font-weight: 700;
-    }
-    .share-summary-label {
-      color: #4b5563;
-      font-weight: 500;
-    }
-    .share-summary-value {
-      font-weight: 700;
-      color: #111;
-    }
-    .share-summary-value.savings {
-      color: #dc2626;
-      font-size: 22px;
-    }
-    .share-summary-value.final {
-      color: #059669;
-      font-size: 28px;
-    }
-    .share-item-badge {
-      display: none;
-    }
-    .share-summary-badge {
-      display: inline-block;
-      background: #fef3c7;
-      color: #92400e;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-left: 8px;
-    }
-    .share-footer {
-      text-align: center;
-      padding: 24px;
-      background: #f9fafb;
-      font-size: 13px;
-      color: #6b7280;
-      border-top: 1px solid #e5e7eb;
-    }
-    @media (max-width: 768px) {
-      #summarySection {
-        border: none !important;
-        border-radius: 0 !important;
-        margin: 0 -12px !important;
-      }
-      .share-container {
-        border-radius: 0;
-      }
-      .share-header {
-        padding: 12px 16px;
-      }
-      .share-header h2 {
-        font-size: 16px;
-      }
-      .share-content {
-        padding: 16px 12px;
-      }
-      .share-summary {
-        padding: 20px;
-      }
-      .share-summary-row {
-        padding: 8px 0;
-        font-size: 14px;
-      }
-      .share-summary-row.total {
-        padding-top: 16px;
-        font-size: 18px;
-      }
-      .share-summary-value.savings {
-        font-size: 18px;
-      }
-      .share-summary-value.final {
-        font-size: 22px;
-      }
-      .share-summary-badge {
-        font-size: 11px;
-        padding: 3px 8px;
-      }
-    }
-  </style>
   <div class="share-container">
     <div class="share-header">
       <h2>파볼페스타 2025 공동구매</h2>
@@ -772,7 +590,7 @@ function renderSummary(){
       세차갤 - times9517 (<a href="https://open.kakao.com/o/slem2xXh" target="_blank" style="color:#6b7280; text-decoration:underline;">문의</a>)
     </div>
   </div>
-`;
+  `;
 }
 
 // 이벤트 바인딩
@@ -805,55 +623,33 @@ function recomputeManualPrice(){
 document.getElementById('mMsrp').addEventListener('input', recomputeManualPrice);
 document.getElementById('mDiscount').addEventListener('input', recomputeManualPrice);
 
-// 탭 전환 (PC/모바일 공통)
-const tabSelectBtn = document.getElementById('tabSelect');
-const tabCartBtn = document.getElementById('tabCart');
-const tabSummaryBtn = document.getElementById('tabSummary');
-const selectSection = document.getElementById('selectSection');
-const cartSection = document.getElementById('cartSection');
-const summarySection = document.getElementById('summarySection');
+// 탭 전환 시스템
+const tabs = [
+  {name: 'select', btn: 'tabSelect', section: 'selectSection'},
+  {name: 'cart', btn: 'tabCart', section: 'cartSection'},
+  {name: 'summary', btn: 'tabSummary', section: 'summarySection'}
+];
 
-function applyTab(name){
-  // 탭 전환 로직
-  if (name === 'cart'){
-    selectSection.classList.add('mobile-hide');
-    cartSection.classList.remove('mobile-hide');
-    summarySection.classList.add('mobile-hide');
-    tabSelectBtn?.classList.remove('active');
-    tabCartBtn?.classList.add('active');
-    tabSummaryBtn?.classList.remove('active');
-  } else if (name === 'summary'){
-    selectSection.classList.add('mobile-hide');
-    cartSection.classList.add('mobile-hide');
-    summarySection.classList.remove('mobile-hide');
-    tabSelectBtn?.classList.remove('active');
-    tabCartBtn?.classList.remove('active');
-    tabSummaryBtn?.classList.add('active');
-    renderSummary(); // 요약 탭 열 때 렌더링
-  } else {
-    // default: 상품 리스트
-    selectSection.classList.remove('mobile-hide');
-    cartSection.classList.add('mobile-hide');
-    summarySection.classList.add('mobile-hide');
-    tabSelectBtn?.classList.add('active');
-    tabCartBtn?.classList.remove('active');
-    tabSummaryBtn?.classList.remove('active');
-  }
+function applyTab(activeName){
+  tabs.forEach(tab => {
+    const btn = document.getElementById(tab.btn);
+    const section = document.getElementById(tab.section);
+    const isActive = tab.name === activeName;
+
+    btn?.classList.toggle('active', isActive);
+    section?.classList.toggle('mobile-hide', !isActive);
+  });
+
+  if (activeName === 'summary') renderSummary();
 }
 
-tabSelectBtn?.addEventListener('click', ()=>applyTab('select'));
-tabCartBtn?.addEventListener('click', ()=>applyTab('cart'));
-tabSummaryBtn?.addEventListener('click', ()=>applyTab('summary'));
+tabs.forEach(tab => {
+  document.getElementById(tab.btn)?.addEventListener('click', () => applyTab(tab.name));
+});
 
 function syncTabsToViewport(){
-  // 뷰포트 변경 시 표시 정책 재적용
-  if (tabSummaryBtn?.classList.contains('active')) {
-    applyTab('summary');
-  } else if (tabCartBtn?.classList.contains('active')) {
-    applyTab('cart');
-  } else {
-    applyTab('select');
-  }
+  const activeTab = tabs.find(tab => document.getElementById(tab.btn)?.classList.contains('active'));
+  if (activeTab) applyTab(activeTab.name);
 }
 window.addEventListener('resize', syncTabsToViewport);
 
@@ -864,31 +660,7 @@ renderProducts();
 loadCart();
 applyTab('select'); // 초기 탭 설정
 
-// ---- 콘솔 자가 테스트 ----
-(function runSelfTests(){
-  const results = [];
-  const assert = (name, cond) => results.push({name, pass: !!cond});
-  try {
-    // TC1: 초기 로드 시 저장된 장바구니가 없다면 비어 있어야 함
-    const hasRaw = !!localStorage.getItem('cart');
-    if (!hasRaw) assert('초기 장바구니 비어 있음', cart.size === 0);
-    // TC2: key 중복 없음 (PDF 정확성 기본 검증)
-    const keys = new Set();
-    let dup = false; for (const p of PRODUCTS){ const k = `${p.brand}|${p.name}|${p.size}`; if (keys.has(k)) dup = true; keys.add(k); }
-    assert('PDF 품목 key 중복 없음', !dup);
-    // TC3: 카운트 일관성 (요약에 표시된 값과 내부 값 일치)
-    assert('요약 카운트 일치',
-      Number(document.getElementById('pdfCount').textContent) === PRODUCTS.length &&
-      Number(document.getElementById('manualCount').textContent) === MANUAL.length &&
-      Number(document.getElementById('totalCount').textContent) === (PRODUCTS.length + MANUAL.length)
-    );
-    // TC4: 기본 수동 항목 존재
-    assert('수동 기본 항목(화이트 어플리케이터) 존재', MANUAL.some(x=>x.name==='화이트 어플리케이터' && x.brand==='-' && x.price===1740));
-    // TC5: PRODUCTS 파싱 성공(최소 1개 이상)
-    assert('PRODUCTS 파싱 성공', Array.isArray(PRODUCTS) && PRODUCTS.length > 0);
-  } catch (e) {
-    console.error('테스트 예외', e);
-    results.push({name:'테스트 예외', pass:false});
-  }
-  console.table(results);
-})();
+// 푸터 삽입
+document.getElementById('selectFooter').innerHTML = createFooter();
+document.getElementById('cartFooter').innerHTML = createFooter();
+

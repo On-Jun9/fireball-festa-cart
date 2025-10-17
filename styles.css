@@ -308,3 +308,188 @@ details.selector[open] > summary { border-bottom: 1px solid #f3f4f6; padding-bot
   .tab { height:36px; padding:0 12px; font-size: 14px; }
   .mobile-check-all { display:flex !important; }
 }
+
+/* 요약 섹션 스타일 */
+#summarySection {
+  padding: 0 !important;
+  overflow-x: hidden;
+  border: none !important;
+}
+.share-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.share-header {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: white;
+  padding: 16px 24px;
+  text-align: center;
+}
+.share-header h2 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 700;
+}
+.share-content {
+  padding: 20px 24px;
+}
+.share-items-grid {
+  display: block;
+  margin-bottom: 20px;
+}
+.share-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+.share-item-qty {
+  background: #e0e7ff;
+  color: #4338ca;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.share-item-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+.share-item-name {
+  font-size: 13px;
+  margin-bottom: 0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
+  color: #111;
+}
+.share-item-meta {
+  display: none;
+}
+.share-item-prices {
+  gap: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.share-price-original {
+  display: none;
+}
+.share-price-discount {
+  font-size: 14px;
+  font-weight: 700;
+  color: #059669;
+}
+.share-summary {
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.share-summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  font-size: 16px;
+}
+.share-summary-row.total {
+  border-top: 3px solid #d1d5db;
+  margin-top: 16px;
+  padding-top: 20px;
+  font-size: 20px;
+  font-weight: 700;
+}
+.share-summary-label {
+  color: #4b5563;
+  font-weight: 500;
+}
+.share-summary-value {
+  font-weight: 700;
+  color: #111;
+}
+.share-summary-value.savings {
+  color: #dc2626;
+  font-size: 22px;
+}
+.share-summary-value.final {
+  color: #059669;
+  font-size: 28px;
+}
+.share-item-badge {
+  display: none;
+}
+.share-summary-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+.share-footer {
+  text-align: center;
+  padding: 24px;
+  background: #f9fafb;
+  font-size: 13px;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+}
+@media (max-width: 768px) {
+  #summarySection {
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 -12px !important;
+  }
+  .share-container {
+    border-radius: 0;
+  }
+  .share-header {
+    padding: 12px 16px;
+  }
+  .share-header h2 {
+    font-size: 16px;
+  }
+  .share-content {
+    padding: 16px 12px;
+  }
+  .share-summary {
+    padding: 20px;
+  }
+  .share-summary-row {
+    padding: 8px 0;
+    font-size: 14px;
+  }
+  .share-summary-row.total {
+    padding-top: 16px;
+    font-size: 18px;
+  }
+  .share-summary-value.savings {
+    font-size: 18px;
+  }
+  .share-summary-value.final {
+    font-size: 22px;
+  }
+  .share-summary-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+}
