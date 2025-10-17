@@ -343,8 +343,8 @@ details.selector[open] > summary { border-bottom: 1px solid #f3f4f6; padding-bot
 .share-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 6px;
+  padding: 6px 10px;
   margin-bottom: 4px;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
@@ -357,7 +357,7 @@ details.selector[open] > summary { border-bottom: 1px solid #f3f4f6; padding-bot
   padding: 4px 8px;
   font-size: 12px;
   font-weight: 700;
-  min-width: 32px;
+  min-width: 30px;
   text-align: center;
   flex-shrink: 0;
 }
@@ -365,13 +365,15 @@ details.selector[open] > summary { border-bottom: 1px solid #f3f4f6; padding-bot
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
+  min-width: 0;
 }
 .share-item-name {
   font-size: 13px;
   margin-bottom: 0;
   flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
