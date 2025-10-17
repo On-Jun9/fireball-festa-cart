@@ -81,7 +81,7 @@ const PRODUCTS = [
   {brand:"파이어볼 코팅제", name:"신제품 - 파이어볼 엔젤티얼스 II 50ml", size:"50ml", msrp:35000, discount:"40%", price:21000},
   {brand:"파이어볼 코팅제", name:"슈터 브라이트 100ml", size:"100ml", msrp:30000, discount:"30%", price:21000},
   {brand:"파이어볼 코팅제", name:"슈터 다크 100ml", size:"100ml", msrp:30000, discount:"30%", price:21000},
-  {brand:"파이어볼 코팅제", name:"신제품 - 휠 코트 50ml", size:"50ml", msrp:30000, discount:"30%", price:21000},
+  {brand:"파이어볼 코팅제", name:"신제품 - 휠 코트 <s>50ml</s> 30ml", size:"30ml", msrp:30000, discount:"30%", price:21000},
   {brand:"파이어볼 코팅제", name:"신제품 - 플래시 200ml", size:"200ml", msrp:35000, discount:"30%", price:24500},
 
   // 바인더 4L
@@ -399,6 +399,12 @@ function loadCart(){
       if (!Array.isArray(arr)) throw new Error('저장 포맷 오류');
       cart.clear();
       for (const it of arr){
+        // 마이그레이션: 휠 코트 50ml → 30ml 자동 변환
+        if (it.brand === '파이어볼 코팅제' && it.name === '신제품 - 휠 코트 50ml' && it.size === '50ml') {
+          it.name = '신제품 - 휠 코트 <s>50ml</s> 30ml';
+          it.size = '30ml';
+        }
+
         const p = PRODUCTS.concat(MANUAL).find(x => x && x.brand===it.brand && x.name===it.name && x.size===it.size) || it; // fallback
         if (!p || p.brand==null) continue; // 깨진 항목 스킵
         cart.set(keyOf(p), {product: p, qty: it.qty, checked: it.checked!==false});
