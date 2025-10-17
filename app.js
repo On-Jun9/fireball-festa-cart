@@ -763,7 +763,7 @@ function renderSummary(){
     <div class="share-footer">
       파이어볼 공식 카페 2025 공동구매 리스트<br>
       fireball-cart.pages.dev<br>
-      세차갤 - times9517
+      세차갤 - times9517 (<a href="https://open.kakao.com/o/slem2xXh" target="_blank" style="color:#6b7280; text-decoration:underline;">문의</a>)
     </div>
   </div>
 `;
