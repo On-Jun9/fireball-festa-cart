@@ -614,8 +614,8 @@ function renderSummary(){
           <div class="share-item">
             <div class="share-item-qty">${item.qty}개</div>
             <div class="share-item-info">
-              <div class="share-item-name">${item.name}</div>
-              <div class="share-item-meta">${item.brand} · ${item.size}</div>
+              <div class="share-item-name">${item.name} <span style="font-size:0.7em; color:#9ca3af; font-weight:normal;">(${item.brand})</span></div>
+              <div class="share-item-meta">${item.size}</div>
               <div class="share-item-prices">
                 <span class="share-price-original">${fmt(item.msrp * item.qty)}</span>
                 <span class="share-price-discount">${fmt(item.price * item.qty)}</span>
