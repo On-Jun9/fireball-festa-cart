@@ -1,0 +1,309 @@
+/* 파볼페스타 2025 공동구매 장바구니 스타일 */
+
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; margin: 24px; color: #111; }
+h1 { font-size: 22px; margin: 0 0 16px; }
+.wrap { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; }
+.card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+input[type="search"], select, input[type="number"], input[type="text"] { height: 36px; padding: 0 10px; border: 1px solid #d1d5db; border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
+th, td { padding: 8px 6px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+th { text-align: left; background: #fafafa; position: sticky; top: 0; z-index: 1; }
+tbody tr:hover { background: #fafafa; }
+.right { text-align: right; }
+.center { text-align: center; }
+.muted { color: #6b7280; }
+.btn { height: 32px; padding: 0 10px; border: 1px solid #d1d5db; background: #fff; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: #111827; color: #fff; border-color: #111827; }
+.btn.added { background: #10b981; color: #fff; border-color: #10b981; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+.btn.pulse { animation: pulse 0.3s ease; }
+.qty { width: 56px; text-align: right; height: 32px; border: 1px solid #d1d5db; border-radius: 8px; padding: 0 6px; }
+.pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #eef2ff; color: #3730a3; font-size: 12px; }
+tfoot td { font-weight: 700; }
+.small { font-size: 12px; }
+.scroll { max-height: 60vh; overflow: auto; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.del { color: #ef4444; background: #fff; border-color: #ef4444; }
+/* 수동 항목 인라인 삭제 버튼 */
+.btn-delete-inline {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #fca5a5;
+  background: #fff;
+  color: #ef4444;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  margin-right: 4px;
+  transition: all 0.2s;
+  vertical-align: middle;
+}
+.btn-delete-inline:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+.name { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brandCol { width: 110px; }
+.sizeCol { width: 80px; }
+.priceCol { width: 110px; }
+.qtyCol { width: 80px; }
+.actCol { width: 90px; }
+details.selector > summary::-webkit-details-marker { display:none; }
+details.selector > summary { display:flex; align-items:center; gap:8px; }
+details.selector[open] > summary { border-bottom: 1px solid #f3f4f6; padding-bottom: 6px; }
+.manual-row { display:grid; grid-template-columns: repeat(6, minmax(0,1fr)) 100px; gap:8px; width:100%; }
+.manual-row input, .manual-row select { width: 100%; }
+.hint { font-size: 12px; color:#6b7280; }
+/* 모바일 최적화 */
+@media (max-width: 640px) {
+  body { margin: 12px; }
+  h1 { font-size: 18px; }
+  .card { padding: 10px; border-radius: 10px; }
+  .wrap { grid-template-columns: 1fr; gap: 12px; }
+  .row { flex-direction: column; align-items: stretch; gap: 8px; }
+  /* 필터 행은 가로로 유지 */
+  .row.filters { flex-direction: row; gap: 6px; }
+  .row.filters input[type="search"] { flex: 1; min-width: 0; }
+  .row.filters select { flex: 0 0 auto; width: auto; min-width: 90px; }
+  .row.filters button { flex: 0 0 auto; width: auto; padding: 0 10px; font-size: 13px; }
+  input[type="search"], select, input[type="number"], input[type="text"] { width: 100%; height: 40px; }
+  table { table-layout: auto; font-size: 12px; }
+  th, td { padding: 6px 4px; }
+  .brandCol { width: 90px; }
+  .sizeCol { width: 64px; }
+  .priceCol { width: 90px; }
+  .qtyCol { width: 68px; }
+  .actCol { width: 74px; }
+  .qty { width: 64px; height: 36px; }
+  .btn { height: 40px; padding: 0 12px; }
+  details.selector > summary { font-size: 15px; }
+}
+/* 반응형 테이블: 모바일에서 카드형으로 전환 */
+@media (max-width: 640px) {
+  table { display:block; width:100%; overflow-x: visible; }
+  thead { display:none; }
+  tbody, tfoot { display:block; width:100%; }
+  tbody tr, tfoot tr {
+    display:block;
+    background:#fff;
+    border:1px solid #e0e0e0;
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:10px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* 상품 선택 카드 배경색 */
+  #productTable tbody tr {
+    background:#f8f9fa;
+  }
+
+  /* 장바구니 카드 배경색 및 간격 축소 */
+  #cartTable tbody tr {
+    background:#f8f9fa;
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+  tbody td, tfoot td { display:block; border-bottom:none; padding:0; margin:0; }
+  tbody td::before, tfoot td::before { display:none; }
+  .name { max-width: none; white-space: normal; overflow:visible; line-height:1.4; }
+  .btn { width: 100%; height: 38px; font-size:14px; font-weight:600; border-radius:8px; }
+  .scroll { max-height: none; }
+
+  /* 상품 리스트 카드 - 컴팩트 그리드 */
+  #productTable tbody tr {
+    display:grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto auto auto;
+    gap: 6px 10px;
+  }
+
+  /* 첫 줄: 제품명 + 브랜드 + 용량 */
+  #productTable tbody td[data-label="상품명"] {
+    grid-column: 1 / 2; grid-row: 1;
+    font-size:15px; font-weight:700; color:#111;
+    padding:0 0 6px 0;
+    border-bottom:1px solid #f3f4f6;
+  }
+  #productTable tbody td[data-label="브랜드"] {
+    grid-column: 2; grid-row: 1;
+    font-size:10px; color:#9ca3af;
+    padding:0 6px 6px 0;
+    border-bottom:1px solid #f3f4f6;
+    align-self: end;
+  }
+  #productTable tbody td[data-label="용량"] {
+    grid-column: 3; grid-row: 1;
+    font-size:12px; color:#6b7280;
+    padding:0 0 6px 0;
+    border-bottom:1px solid #f3f4f6;
+    align-self: end;
+    text-align: right;
+  }
+
+  /* 둘째 줄: 소비자가 + 할인율 + 공구가 */
+  #productTable tbody td[data-label="소비자가"] {
+    grid-column: 1; grid-row: 2;
+    font-size:11px; color:#6b7280;
+  }
+  #productTable tbody td[data-label="소비자가"]::before {
+    content: "소비자가 "; font-size:10px; color:#9ca3af;
+  }
+  #productTable tbody td[data-label="할인율"] {
+    grid-column: 2; grid-row: 2;
+    text-align: center;
+  }
+  #productTable tbody td[data-label="할인율"] .pill {
+    background:#fef3c7; color:#92400e;
+    padding:2px 8px; font-size:11px; font-weight:600;
+  }
+  #productTable tbody td[data-label="공구가"] {
+    grid-column: 3; grid-row: 2;
+    font-size:16px; font-weight:700; color:#059669;
+    text-align: right;
+  }
+
+  /* 셋째 줄: 추가 버튼 */
+  #productTable tbody td[data-label="추가"] {
+    grid-column: 1 / -1; grid-row: 3;
+    margin-top:4px;
+  }
+
+  /* 모바일에서 인라인 삭제 버튼 스타일 */
+  @media (max-width: 640px) {
+    .btn-delete-inline {
+      width: 20px;
+      height: 20px;
+      font-size: 14px;
+      margin-right: 6px;
+    }
+  }
+
+  /* 장바구니 카드 - 상품 카드와 동일 구조 */
+  #cartTable tbody tr {
+    display: grid;
+    grid-template-columns: 24px 1fr auto auto;
+    grid-template-rows: auto auto auto;
+    gap: 4px 8px;
+  }
+
+  /* 체크박스 - 카드 밖 왼쪽 */
+  #cartTable tbody td[data-label="선택"] {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    align-self: flex-start;
+    padding-top: 2px;
+  }
+  #cartTable tbody td[data-label="선택"] input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  /* 첫 줄: 상품명 + 브랜드 + 용량 (구분선 있음) */
+  #cartTable tbody td[data-label="상품명"] {
+    grid-column: 2 / 3;
+    grid-row: 1;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    padding: 0 0 4px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  #cartTable tbody td[data-label="브랜드"] {
+    grid-column: 3;
+    grid-row: 1;
+    font-size: 10px;
+    color: #9ca3af;
+    padding: 0 6px 4px 0;
+    border-bottom: 1px solid #f3f4f6;
+    align-self: end;
+  }
+
+  #cartTable tbody td[data-label="용량"] {
+    grid-column: 4;
+    grid-row: 1;
+    font-size: 12px;
+    color: #6b7280;
+    padding: 0 0 4px 0;
+    border-bottom: 1px solid #f3f4f6;
+    align-self: end;
+    text-align: right;
+  }
+
+  /* 둘째 줄: 공구가 + 개수 + 소계 */
+  #cartTable tbody td[data-label="공구가"] {
+    grid-column: 2 / 3;
+    grid-row: 2;
+    font-size: 11px;
+    color: #6b7280;
+  }
+  #cartTable tbody td[data-label="공구가"]::before {
+    content: "공구가 ";
+    font-size: 10px;
+    color: #9ca3af;
+  }
+
+  #cartTable tbody td[data-label="개수"] {
+    grid-column: 3;
+    grid-row: 2;
+    text-align: center;
+  }
+  #cartTable tbody td[data-label="개수"]::before {
+    content: "개수 ";
+    font-size: 10px;
+    color: #9ca3af;
+  }
+  #cartTable tbody td[data-label="개수"] input.qty {
+    width: 50px;
+    height: 26px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+    margin-left: 4px;
+  }
+
+  #cartTable tbody td[data-label="소계"] {
+    grid-column: 4;
+    grid-row: 2;
+    font-size: 16px;
+    font-weight: 700;
+    color: #059669;
+    text-align: right;
+  }
+
+  /* 셋째 줄: 삭제 버튼 */
+  #cartTable tbody td[data-label="삭제"] {
+    grid-column: 2 / -1;
+    grid-row: 3;
+    margin-top: 2px;
+  }
+  #cartTable tbody td[data-label="삭제"] .btn {
+    background: #fff;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    font-weight: 600;
+    height: 34px;
+    font-size: 13px;
+  }
+}
+/* 탭 네비게이션 */
+.tabs { position: sticky; top: 0; z-index: 5; display:flex; gap:8px; align-items:center; background:#fff; padding-bottom:12px; margin-bottom: 12px; }
+.tab { height:40px; padding:0 16px; border:1px solid #d1d5db; background:#fff; border-radius:8px; cursor:pointer; font-size: 15px; font-weight: 500; transition: all 0.2s; }
+.tab:hover { background:#f9fafb; }
+.tab.active { background:#111827; color:#fff; border-color:#111827; }
+.mobile-hide { display:none !important; }
+.mobile-check-all { display:none !important; }
+@media (max-width: 640px) {
+  .tabs { padding-bottom:6px; margin-bottom: 8px; }
+  .tab { height:36px; padding:0 12px; font-size: 14px; }
+  .mobile-check-all { display:flex !important; }
+}

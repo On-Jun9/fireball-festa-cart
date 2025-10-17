@@ -2,3 +2,5 @@
 node_modules/
 *.log
 assets/*.png
+CLAUDE.md
+AGENTS.md
